@@ -1,0 +1,29 @@
+R version 3.0.2 (2013-09-25)
+Platform: x86_64-apple-darwin10.8.0 (64-bit)
+
+locale:
+[1] en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8
+
+attached base packages:
+[1] stats     graphics  grDevices utils     datasets  methods   base     
+
+other attached packages:
+[1] MSstats.daily_2.1.6 Rcpp_0.10.4        
+
+loaded via a namespace (and not attached):
+ [1] affy_1.39.2           affyio_1.29.0         Biobase_2.21.7       
+ [4] BiocGenerics_0.7.5    BiocInstaller_1.12.0  bitops_1.0-6         
+ [7] caTools_1.14          codetools_0.2-8       colorspace_1.2-3     
+[10] data.table_1.8.10     dichromat_2.0-0       digest_0.6.3         
+[13] gdata_2.13.2          ggplot2_0.9.3.1.99    gplots_2.12.1        
+[16] grid_3.0.2            gtable_0.1.2          gtools_3.0.0         
+[19] impute_1.35.0         IRanges_1.19.37       KernSmooth_2.23-10   
+[22] labeling_0.2          lattice_0.20-24       limma_3.17.23        
+[25] lme4_1.0-5            marray_1.39.0         MASS_7.3-29          
+[28] Matrix_1.1-1.1        minqa_1.2.2           MSnbase_1.9.8        
+[31] munsell_0.4.2         mzR_1.7.3             nlme_3.1-111         
+[34] parallel_3.0.2        plyr_1.8              preprocessCore_1.23.0
+[37] proto_0.3-10          RColorBrewer_1.0-5    reshape_0.8.4        
+[40] reshape2_1.2.2        scales_0.2.3          splines_3.0.2        
+[43] stats4_3.0.2          stringr_0.6.2         tools_3.0.2          
+[46] vsn_3.29.1            zlibbioc_1.7.0       

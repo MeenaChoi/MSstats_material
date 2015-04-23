@@ -1,0 +1,88 @@
+\begin{thebibliography}{}
+
+\bibitem[Amaratunga and Cabrera(2001)Amaratunga and Cabrera]{Amaratunga:2001ie}
+Amaratunga, D. and Cabrera, J. (2001).
+\newblock {Analysis of Data From Viral DNA Microchips}.
+\newblock {\em Journal of the American Statistical Association\/}, {\bf
+  96}(456), 1161--1170.
+
+\bibitem[Benjamini and Hochberg(1955)Benjamini and Hochberg]{Benjamini:1995}
+Benjamini, Y. and Hochberg, Y. (1955).
+\newblock {Controlling the false discovery rate: a practical and powerful
+  approach to multiple testing}.
+\newblock {\em J.R. Statist. Soc. B\/}, {\bf 57}(1), 289--300.
+
+\bibitem[Chang {\em et~al.}(2012)Chang, Picotti, H{\"u}ttenhain,
+  {Heinzelmann-Schwarz}, Jovanovic, Aebersold, and Vitek]{Chang:2012uv}
+Chang, C., Picotti, P., H{\"u}ttenhain, R., {Heinzelmann-Schwarz}, V.,
+  Jovanovic, M., Aebersold, R., and Vitek, O. (2012).
+\newblock {Protein significance analysis in selected reaction monitoring (SRM)
+  measurements}.
+\newblock {\em Mol. and Cell. Proteomics\/}, {\bf 11}, 1--12.
+
+\bibitem[Clough {\em et~al.}(2012)Clough, Thaminy, Ragg, Aebersold, and
+  Vitek]{Clough:2012bc}
+Clough, T., Thaminy, S., Ragg, S., Aebersold, R., and Vitek, O. (2012).
+\newblock {Statistical protein quantification and significance analysis in
+  label-free LC-MS experiments with complex designs}.
+\newblock {\em {BMC} Bioinformatics\/}, {\bf 13}(Suppl 16), S6.
+
+\bibitem[Cox and Mann(2008)Cox and Mann]{Cox:2008ir}
+Cox, J. and Mann, M. (2008).
+\newblock {MaxQuant enables high peptide identification rates, individualized
+  p.p.b.-range mass accuracies and proteome-wide protein quantification}.
+\newblock {\em Nature Biotechnology\/}, {\bf 26}(12), 1367--1372.
+
+\bibitem[Gatto and Lilley(2012)Gatto and Lilley]{Gatto:2012tj}
+Gatto, L. and Lilley, K.~S. (2012).
+\newblock {MSnbase-an R/Bioconductor package for isobaric tagged mass
+  spectrometry data visualization, processing and quantitation}.
+\newblock {\em Bioinformatics\/}, {\bf 28}, 288--289.
+
+\bibitem[Kutner {\em et~al.}(2005)Kutner, Nachtsheim, Neter, and Li]{Kutner5th}
+Kutner, M., Nachtsheim, C., Neter, J., and Li, W. (2005).
+\newblock {\em Applied linear statistical models\/}.
+\newblock McGrow Hill, New York.
+
+\bibitem[MacLean {\em et~al.}(2010)MacLean, Tomazela, Shulman, Chambers,
+  Finney, Frewen, Kern, Tabb, Liebler, and MacCoss]{MacLean:2010hd}
+MacLean, B., Tomazela, D.~M., Shulman, N., Chambers, M., Finney, G., Frewen,
+  B., Kern, R., Tabb, D.~L., Liebler, D.~C., and MacCoss, M.~J. (2010).
+\newblock {Skyline: An open source document editor for creating and analyzing
+  targeted proteomics experiments}.
+\newblock {\em Bioinformatics\/}, {\bf 26--27}, 966.
+
+\bibitem[Mueller {\em et~al.}(2007)Mueller, Rinner, Schmidt, Letarte,
+  Bodenmiller, Brusniak, Vitek, Aebersold, and M{\"u}ller]{Mueller:2007fo}
+Mueller, L.~N., Rinner, O., Schmidt, A., Letarte, S., Bodenmiller, B.,
+  Brusniak, M., Vitek, O., Aebersold, R., and M{\"u}ller, M. (2007).
+\newblock {SuperHirn - a novel tool for high resolution LC-MS-based
+  peptide/protein profiling.}
+\newblock {\em Proteomics\/}, {\bf 7}, 3470--3480.
+
+\bibitem[Picotti {\em et~al.}(2009)Picotti, Bodenmiller, Mueller, Domon, and
+  Aebersold]{Picotti09}
+Picotti, P., Bodenmiller, B., Mueller, L.~N., Domon, B., and Aebersold, R.
+  (2009).
+\newblock Full dynamic range proteome analysis of \emph{S. cerevisiae} by
+  targeted proteomics.
+\newblock {\em Cell\/}, {\bf 138}, 795--806.
+
+\bibitem[Sturm {\em et~al.}(2008)Sturm, Bertsch, Gr{\"o}pl, Hildebrandt,
+  Hussong, Lange, Pfeifer, Schulz-Trieglaff, Zerck, Reinert, and
+  Kohlbacher]{Sturm:2008eu}
+Sturm, M., Bertsch, A., Gr{\"o}pl, C., Hildebrandt, A., Hussong, R., Lange, E.,
+  Pfeifer, N., Schulz-Trieglaff, O., Zerck, A., Reinert, K., and Kohlbacher, O.
+  (2008).
+\newblock {OpenMS -- An open-source software framework for mass spectrometry}.
+\newblock {\em BMC Bioinformatics\/}, {\bf 9}(1), 163.
+
+\bibitem[Surinova {\em et~al.}(2013)Surinova, H{\"u}ttenhain, Chang, Espona,
+  Vitek, and Aebersold]{Surinova:2013jk}
+Surinova, S., H{\"u}ttenhain, R., Chang, C., Espona, L., Vitek, O., and
+  Aebersold, R. (2013).
+\newblock {Automated selected reaction monitoring data analysis workflow for
+  large-scale targeted proteomic studies}.
+\newblock {\em Nature Protocols\/}, {\bf 8}, 1602--1619.
+
+\end{thebibliography}
