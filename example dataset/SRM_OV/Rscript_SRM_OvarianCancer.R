@@ -2,12 +2,12 @@
 ## Part 1: Install MSstats (only need to install once)
 #########################################
 # 1. Please install all dependancy packages first.
-install.packages(c("gplots","lme4","ggplot2","reshape","data.table","Rcpp"))
+install.packages(c("gplots","lme4","ggplot2","reshape","reshape2","data.table","Rcpp"))
 source("http://bioconductor.org/biocLite.R")
 biocLite(c("limma","marray","preprocessCore","MSnbase"))
 
 # 2. Install MSstats
-install.packages(pkgs = "MSstats.daily_2.1.6.tar.gz", repos = NULL, type ="source") 
+install.packages(pkgs = "MSstats_3.0.6.tar.gz", repos = NULL, type ="source") 
 
 # MSstats installation is complete ~~~
 
@@ -26,10 +26,10 @@ install.packages(pkgs = "MSstats.daily_2.1.6.tar.gz", repos = NULL, type ="sourc
 ## Part 3: Run MSstats (start here if you already install MSstats)
 #########################################
 # load the library
-library(MSstats.daily)
+library(MSstats)
 
 # Help file
-?MSstats.daily
+?MSstats
 
 # Input data
 raw<-read.csv("RawData.ovarian.csv")
@@ -40,10 +40,10 @@ head(raw)
 # pre-processing data: quality control of MS runs
 ? dataProcess
 quantData<-dataProcess(raw)
-quantData[1:5,]
+quantData$ProcessedData[1:5,]
 
 # output QuantData
-write.csv(quantData,file="OvarianCancer_QuantData.csv")
+write.csv(quantData$ProcessedData,file="OvarianCancer_QuantData.csv")
 
 
 #=====================
@@ -56,10 +56,19 @@ dataProcessPlots(data=quantData,type="ConditionPlot",address="OvarianCancer_")
 
 
 #=====================
+# Function: modelBasedQCPlots
+# visualization for model-based quality control in fitting model.
+?modelBasedQCPlots
+
+modelBasedQCPlots(data=quantData$ModelQC,type="ResidualPlots",featureName=FALSE,address="OvarianCancer_")
+modelBasedQCPlots(data=quantData$ModelQC,type="QQPlots",feature.QQPlot="byFeature",address="OvarianCancer_")
+
+
+#=====================
 # Function: groupComparison
 # generate testing results of protein inferences across concentrations
 ?groupComparison
-levels(quantData$GROUP_ORIGINAL)
+levels(quantData$ProcessedData$GROUP_ORIGINAL)
 comparison<-matrix(c(-1,1),nrow=1)
 row.names(comparison)<-"tumor-control"
 
@@ -67,16 +76,6 @@ resultOneComparison<-groupComparison(contrast.matrix=comparison,data=quantData)
 resultOneComparison$ComparisonResult
 
 write.csv(resultOneComparison$ComparisonResult, file="OvarianCancer_SignificanceTestingResult.csv")
-
-
-#=====================
-# Function: modelBasedQCPlots
-# visualization for model-based quality control in fitting model.
-?modelBasedQCPlots
-
-modelBasedQCPlots(data=resultOneComparison$ModelQC,type="ResidualPlots",address="OvarianCancer_")
-
-modelBasedQCPlots(data=resultOneComparison$ModelQC,type="QQPlots",address="OvarianCancer_")
 
 
 #=====================
@@ -103,7 +102,7 @@ groupComparisonPlots(data=resultOneComparison$ComparisonResult,type="ComparisonP
 # calulate number of biological replicates per group for your next experiment
 ?designSampleSize
 
-result.sample<-designSampleSize(data=quantData,numSample=TRUE,numPep=3,numTran=2,desiredFC=c(1.05,1.3),FDR=0.05,power=0.8)
+result.sample<-designSampleSize(data=resultOneComparison$fittedmodel,numSample=TRUE,desiredFC=c(1.05,1.3),FDR=0.05,power=0.8)
 
 result.sample
 
@@ -124,11 +123,11 @@ dev.off()
 ?quantification
 
 # (1) group quantification
-groupQuant<-quantification(data=quantData,type="Group")
+groupQuant<-quantification(data=quantData$ProcessedData,type="Group")
 write.csv(groupQuant, file="OvarianCancer_GroupQuantification.csv")
 
 # (2) sample quantification
-sampleQuant<-quantification(data=quantData,type="Sample")
+sampleQuant<-quantification(data=quantData$ProcessedData,type="Sample")
 write.csv(sampleQuant, file="OvarianCancer_SampleQuantification.csv")
 
 

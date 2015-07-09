@@ -66,7 +66,7 @@ modelBasedQCPlots(data=quantData$ModelQC,type="QQPlots",feature.QQPlot="byFeatur
 # Function: groupComparison
 # generate testing results of protein inferences across concentrations
 ?groupComparison
-levels(quantData$GROUP_ORIGINAL)
+levels(quantData$ProcessedData$GROUP_ORIGINAL)
 comparison<-matrix(c(0,0,0,0,0,1,-1),nrow=1)
 row.names(comparison)<-"I-J"
 
