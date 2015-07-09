@@ -2,12 +2,12 @@
 ## Part 1: Install MSstats (only need to install once)
 #########################################
 # 1. Please install all dependancy packages first.
-install.packages(c("gplots","lme4","ggplot2","reshape","data.table","Rcpp"))
+install.packages(c("gplots","lme4","ggplot2","reshape","reshape2","data.table","Rcpp"))
 source("http://bioconductor.org/biocLite.R")
 biocLite(c("limma","marray","preprocessCore","MSnbase"))
 
 # 2. Install MSstats
-install.packages(pkgs = "MSstats.daily_2.1.6.tar.gz", repos = NULL, type ="source") 
+install.packages(pkgs = "MSstats_3.0.6.tar.gz", repos = NULL, type ="source") 
 
 # MSstats installation is complete ~~~
 
@@ -26,10 +26,10 @@ install.packages(pkgs = "MSstats.daily_2.1.6.tar.gz", repos = NULL, type ="sourc
 ## Part 3: Run MSstats (start here if you already install MSstats)
 #########################################
 # load the library
-library(MSstats.daily)
+library(MSstats)
 
 # Help file
-?MSstats.daily
+?MSstats
 
 # Input data
 raw<-read.csv("RawData.DDA.csv")
@@ -39,27 +39,39 @@ head(raw)
 # Function: dataProcess
 # pre-processing data: quality control of MS runs
 ? dataProcess
+
 quantData<-dataProcess(raw)
-quantData[1:5,]
+quantData$ProcessedData[1:5,]
 
 # output QuantData
-write.csv(quantData,file="DDA_QuantData.csv")
+write.csv(quantData$ProcessedData,file="DDA_QuantData.csv")
 
 
 #=====================
 # Function: dataProcessPlots
 # visualization 
 ? dataProcessPlots
-dataProcessPlots(data=quantData,type="ProfilePlot",address="DDA_")
-dataProcessPlots(data=quantData,type="QCPlot",address="DDA_")
+
+dataProcessPlots(data=quantData,type="ProfilePlot",ylimUp=35,address="DDA_")
+dataProcessPlots(data=quantData,type="QCPlot",ylimUp=35,address="DDA_")
 dataProcessPlots(data=quantData,type="ConditionPlot",address="DDA_")
+
+
+#=====================
+# Function: modelBasedQCPlots
+# visualization for model-based quality control in fitting model.
+?modelBasedQCPlots
+
+modelBasedQCPlots(data=quantData$ModelQC,type="ResidualPlots",featureName=FALSE,address="DDA_")
+modelBasedQCPlots(data=quantData$ModelQC,type="QQPlots",feature.QQPlot="byFeature",address="DDA_")
 
 
 #=====================
 # Function: groupComparison
 # generate testing results of protein inferences across concentrations
 ?groupComparison
-levels(quantData$GROUP_ORIGINAL)
+
+levels(quantData$ProcessedData$GROUP_ORIGINAL)
 comparison1<-matrix(c(1,-1,0,0,0,0),nrow=1)
 comparison2<-matrix(c(1,0,-1,0,0,0),nrow=1)
 comparison3<-matrix(c(1,0,0,-1,0,0),nrow=1)
@@ -70,21 +82,10 @@ comparison<-rbind(comparison1,comparison2,comparison3,comparison4,comparison5)
 row.names(comparison)<-c("C1-C2","C1-C3","C1-C4","C1-C5","C1-C6")
 
 
-resultMultiComparisons<-groupComparison(contrast.matrix=comparison,data=quantData,labeled=FALSE)
+resultMultiComparisons<-groupComparison(contrast.matrix=comparison,data=quantData)
 resultMultiComparisons$ComparisonResult
 
 write.csv(resultMultiComparisons$ComparisonResult, file="DDA_SignificanceTestingResult.csv")
-
-
-
-#=====================
-# Function: modelBasedQCPlots
-# visualization for model-based quality control in fitting model.
-?modelBasedQCPlots
-
-modelBasedQCPlots(data=resultMultiComparisons$ModelQC,type="ResidualPlots",featureName=FALSE,address="DDA_")
-
-modelBasedQCPlots(data=resultMultiComparisons$ModelQC,type="QQPlots",address="DDA_")
 
 
 
@@ -117,7 +118,7 @@ groupComparisonPlots(data=resultMultiComparisons$ComparisonResult,type="Comparis
 # calulate number of biological replicates per group for your next experiment
 ?designSampleSize
 
-result.sample<-designSampleSize(data=quantData,numSample=TRUE,numPep=1,numTran=1,desiredFC=c(1.5,2),FDR=0.05,power=0.9)
+result.sample<-designSampleSize(data=resultMultiComparisons$fittedmodel,numSample=TRUE,desiredFC=c(1.5,2),FDR=0.05,power=0.9)
 result.sample
 
 
@@ -137,11 +138,11 @@ dev.off()
 ?quantification
 
 # (1) group quantification
-groupQuant<-quantification(data=quantData,type="Group")
+groupQuant<-quantification(data=quantData$ProcessedData,type="Group")
 write.csv(groupQuant, file="DDA_GroupQuantification.csv")
 
 # (2) sample quantification
-sampleQuant<-quantification(data=quantData,type="Sample")
+sampleQuant<-quantification(data=quantData$ProcessedData,type="Sample")
 write.csv(sampleQuant, file="DDA_SampleQuantification.csv")
 
 
