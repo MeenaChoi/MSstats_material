@@ -2,12 +2,12 @@
 ## Part 1: Install MSstats (only need to install once)
 #########################################
 # 1. Please install all dependancy packages first.
-install.packages(c("gplots","lme4","ggplot2","reshape","data.table","Rcpp"))
+install.packages(c("gplots","lme4","ggplot2","reshape","reshape2","data.table","Rcpp"))
 source("http://bioconductor.org/biocLite.R")
 biocLite(c("limma","marray","preprocessCore","MSnbase"))
 
 # 2. Install MSstats
-install.packages(pkgs = "MSstats.daily_2.1.6.tar.gz", repos = NULL, type ="source") 
+install.packages(pkgs = "MSstats_3.0.6.tar.gz", repos = NULL, type ="source") 
 
 # MSstats installation is complete ~~~
 
@@ -25,10 +25,10 @@ install.packages(pkgs = "MSstats.daily_2.1.6.tar.gz", repos = NULL, type ="sourc
 ## Part 3: Run MSstats (start here if you already install MSstats)
 #########################################
 # load the library
-library(MSstats.daily)
+library(MSstats)
 
 # Help file
-?MSstats.daily
+?MSstats
 
 # Input data
 raw<-read.csv("forMSstats_Study7.csv")
@@ -39,10 +39,10 @@ head(raw)
 # pre-processing data: quality control of MS runs
 ? dataProcess
 quantData<-dataProcess(raw)
-quantData[1:5,]
+quantData$ProcessedData[1:5,]
 
 # output QuantData
-write.csv(quantData,"Study7_QuantData.csv")
+write.csv(quantData$ProcessedData,"Study7_QuantData.csv")
 
 #=====================
 # Function: dataProcessPlots
@@ -51,6 +51,16 @@ write.csv(quantData,"Study7_QuantData.csv")
 dataProcessPlots(data=quantData,type="ProfilePlot",address="Study7_")
 dataProcessPlots(data=quantData,type="QCPlot",address="Study7_")
 dataProcessPlots(data=quantData,type="ConditionPlot",address="Study7_")
+
+
+#=====================
+# Function: modelBasedQCPlots
+# visualization for model-based quality control in fitting model.
+?modelBasedQCPlots
+
+modelBasedQCPlots(data=quantData$ModelQC,type="ResidualPlots",featureName=FALSE,address="Study7_")
+modelBasedQCPlots(data=quantData$ModelQC,type="QQPlots",feature.QQPlot="byFeature",address="Study7_")
+
 
 #=====================
 # Function: groupComparison
@@ -82,17 +92,6 @@ write.csv(resultMultiComparisons$ComparisonResult, file="Study7_SignificanceTest
 
 
 #=====================
-# Function: modelBasedQCPlots
-# visualization for model-based quality control in fitting model.
-?modelBasedQCPlots
-
-modelBasedQCPlots(data=resultMultiComparisons$ModelQC,type="ResidualPlots",address="Study7_")
-
-modelBasedQCPlots(data=resultMultiComparisons$ModelQC,type="QQPlots",address="Study7_")
-
-
-
-#=====================
 # Function: groupComparisonPlots
 # visualization for testing results
 ?groupComparisonPlots
@@ -121,7 +120,7 @@ groupComparisonPlots(data=resultMultiComparisons$ComparisonResult,type="Comparis
 # calulate number of biological replicates per group for your next experiment
 ?designSampleSize
 
-result.sample<-designSampleSize(data=quantData,numSample=TRUE,numPep=2,numTran=1,desiredFC=c(1.05,1.25),FDR=0.01,power=0.95)
+result.sample<-designSampleSize(data=resultMultiComparisons$fittedmodel,numSample=TRUE,desiredFC=c(1.05,1.25),FDR=0.01,power=0.95)
 result.sample
 
 
@@ -141,11 +140,11 @@ dev.off()
 ?quantification
 
 # (1) group quantification
-quantification(data=quantData,type="Group")
+groupQuant<-quantification(data=quantData$ProcessedData,type="Group")
 write.csv(groupQuant, file="Study7_GroupQuantification.csv")
 
 # (2) sample quantification
-quantification(data=quantData,type="Sample")
+sampleQuant<-quantification(data=quantData$ProcessedData,type="Sample")
 write.csv(sampleQuant, file="Study7_SampleQuantification.csv")
 
 
