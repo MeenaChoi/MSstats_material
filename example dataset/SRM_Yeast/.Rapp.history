@@ -1,0 +1,681 @@
+sub2<-allresult[which(allresult$Protein %in% mm2),]#
+unique(sub2$Label)#
+sub2<-sub2[which(sub2$Label %in% c("S8-S1","S8-S2","S8-S3","S8-S4","S8-S5","S8-S6","S8-S7")),]#
+sub2$Label<-factor(sub2$Label)#
+head(sub2)#
+unique(sub2$Protein)
+resultmse<-NULL#
+resultmedian<-NULL#
+resultsig<-NULL#
+#
+### 10000/1#
+length(unique(sub1$Label))#
+#
+for(i in 1:length(unique(sub1$Label))){#
+	sen<-sub1[sub1$Label==unique(sub1$Label)[i],]#
+	concen<-unique(sen$trueFC)#
+#
+	mse<-tapply(sen$log2FC, sen$analysis, function(x) sum((x-concen)^2))#
+	count<-tapply(sen$log2FC, sen$analysis, function(x) length(x))#
+#
+	resultmse<-rbind(resultmse,mse/count)#
+	med<-tapply(sen$log2FC, sen$analysis, function(x) median((x-concen)^2))#
+	resultmedian<-rbind(resultmedian, med)#
+#
+	sigpro<-sen[sen$adj.pvalue<=0.05,]#
+	sigcount<-tapply(sigpro$adj.pvalue, sigpro$analysis, function(x) length(x))#
+#
+	resultsig<-rbind(resultsig,sigcount)#
+}
+resultmse
+resultsig
+resultmedian
+rownames(resultmedian)<-unique(sub1$Label)
+xtable(t(resultmedian), digits=4)
+sub2<-allresult[which(allresult$Protein %in% mm2),]#
+unique(sub2$Label)#
+sub2<-sub2[which(sub2$Label %in% c("S8-S1","S8-S2","S8-S3","S8-S4","S8-S5","S8-S6","S8-S7")),]#
+sub2$Label<-factor(sub2$Label)#
+head(sub2)
+tail(sub2)
+sub2$log2FC<-(-1)*sub2$log2FC#
+sub2$FCest<-2^(sub2$log2FC)#
+#
+sub2$trueFC<-200#
+sub2[sub2$Label=="S8-S2","trueFC"]<-125.99#
+sub2[sub2$Label=="S8-S3","trueFC"]<-79.37#
+sub2[sub2$Label=="S8-S4","trueFC"]<-50#
+sub2[sub2$Label=="S8-S5","trueFC"]<-4#
+sub2[sub2$Label=="S8-S6","trueFC"]<-2.52#
+sub2[sub2$Label=="S8-S7","trueFC"]<-1.59#
+#
+dim(unique(sub2[,c("Label","trueFC")]))
+head(sub2)
+sub2$trueFC<-log2(sub2$trueFC)
+resultmse<-NULL#
+resultsig<-NULL#
+resultmedian<-NULL#
+#
+length(unique(sub2$Label))
+for(i in 1:length(unique(sub2$Label))){#
+	sen<-sub2[sub2$Label==unique(sub2$Label)[i],]#
+	concen<-unique(sen$trueFC)#
+#
+	mse<-tapply(sen$log2FC, sen$analysis, function(x) sum((x-concen)^2))#
+	count<-tapply(sen$log2FC, sen$analysis, function(x) length(x))#
+#
+	resultmse<-rbind(resultmse,mse/count)#
+	med<-tapply(sen$log2FC, sen$analysis, function(x) median((x-concen)^2))#
+	resultmedian<-rbind(resultmedian, med)#
+#
+	sigpro<-sen[sen$adj.pvalue<=0.05,]#
+	sigcount<-tapply(sigpro$adj.pvalue, sigpro$analysis, function(x) length(x))#
+#
+	resultsig<-rbind(resultsig,sigcount)#
+#
+}
+rownames(resultmse)<-unique(sub2$Label)#
+rownames(resultsig)<-unique(sub2$Label)#
+rownames(resultmedian)<-unique(sub2$Label)
+xtable(t(resultmse), digits=4)
+xtable(t(resultmedian), digits=4)
+xtable(t(resultsig), digits=0)
+sub3<-allresult[which(allresult$Protein %in% mm3),]
+sub3<-sub3[which(sub3$Label %in% c("S2-S1", "S3-S1", "S4-S1", "S5-S1", "S6-S1", "S7-S1", "S8-S1")),]
+sub3$Label<-factor(sub3$Label)
+head(sub3)
+sub3$trueFC<-4#
+sub3[sub3$Label=="S3-S1","trueFC"]<-16#
+sub3[sub3$Label=="S4-S1","trueFC"]<-64#
+sub3[sub3$Label=="S5-S1","trueFC"]<-256#
+sub3[sub3$Label=="S6-S1","trueFC"]<-1024#
+sub3[sub3$Label=="S7-S1","trueFC"]<-4096#
+sub3[sub3$Label=="S8-S1","trueFC"]<-16384#
+#
+dim(unique(sub3[,c("Label","trueFC")]))
+head(sub3)
+tail(sub3)
+range(sub3$log2FC)
+hist(sub3$log2FC)
+sub3$trueFC<-log2(sub3$trueFC)
+head(sub3)
+resultmse<-NULL#
+resultsig<-NULL#
+resultmedian<-NULL
+length(unique(sub3$Label))
+for(i in 1:length(unique(sub3$Label))){#
+	sen<-sub3[sub3$Label==unique(sub3$Label)[i],]#
+	concen<-unique(sen$trueFC)#
+#
+	mse<-tapply(sen$log2FC, sen$analysis, function(x) sum((x-concen)^2))#
+	count<-tapply(sen$log2FC, sen$analysis, function(x) length(x))#
+#
+	resultmse<-rbind(resultmse,mse/count)#
+	med<-tapply(sen$log2FC, sen$analysis, function(x) median((x-concen)^2))#
+	resultmedian<-rbind(resultmedian, med)#
+	sigpro<-sen[sen$adj.pvalue<=0.05,]#
+	sigcount<-tapply(sigpro$adj.pvalue, sigpro$analysis, function(x) length(x))#
+#
+	resultsig<-rbind(resultsig,sigcount)#
+}
+resultmse#
+resultsig#
+resultmedian#
+#
+rownames(resultmse)<-unique(sub3$Label)#
+rownames(resultsig)<-unique(sub3$Label)#
+rownames(resultmedian)<-unique(sub3$Label)
+xtable(t(resultmse), digits=4)
+count
+xtable(t(resultmedian), digits=4)
+xtable(t(resultsig), digits=0)
+noups<-allresult[-which(allresult$Protein %in% c(mm1,mm2,mm3)),]
+head(noups)
+length(unique(noups$Protein))
+length(unique(allresult$Protein))
+noups<-allresult[-which(allresult$Protein %in% c(mm1,mm2,mm3)),]#
+#
+head(noups)#
+length(unique(noups$Protein))#
+length(unique(allresult$Protein))#
+#
+noups<-noups[which(noups$Label %in% c("S2-S1", "S3-S1", "S4-S1", "S5-S1", "S6-S1", "S7-S1", "S8-S1")),]
+noups$Label<-factor(noups$Label)
+noups<-noups[!is.na(noups$log2FC),]
+length(unique(noups$Protein)) ## 2124
+resultspemse<-NULL#
+resultspesig<-NULL#
+resultspmedian<-NULL#
+#
+for(i in 1:length(unique(noups$Label))){#
+	sen<-noups[noups$Label==unique(noups$Label)[i],]#
+#
+	mse<-tapply(sen$log2FC, sen$analysis, function(x) sum((x-0)^2))#
+	count<-tapply(sen$log2FC, sen$analysis, function(x) length(x))#
+#
+	resultspemse<-rbind(resultspemse,mse/count)#
+	med<-tapply(sen$log2FC, sen$analysis, function(x) median((x-concen)^2))#
+	resultspmedian<-rbind(resultspmedian, med)#
+#
+	sigpro<-sen[sen$adj.pvalue<=0.05,]#
+	sigcount<-tapply(sigpro$adj.pvalue, sigpro$analysis, function(x) length(x))#
+#
+	resultspesig<-rbind(resultspesig,sigcount)#
+#
+}
+rownames(resultspemse)<-unique(noups$Label)#
+rownames(resultspesig)<-unique(noups$Label)#
+rownames(resultspmedian)<-unique(noups$Label)#
+#
+xtable(t(resultspemse), digits=4)
+count
+xtable(t(resultspmedian), digits=4)
+resultspemse<-NULL#
+resultspesig<-NULL#
+resultspmedian<-NULL#
+#
+for(i in 1:length(unique(noups$Label))){#
+	sen<-noups[noups$Label==unique(noups$Label)[i],]#
+#
+	mse<-tapply(sen$log2FC, sen$analysis, function(x) sum((x-0)^2))#
+	count<-tapply(sen$log2FC, sen$analysis, function(x) length(x))#
+#
+	resultspemse<-rbind(resultspemse,mse/count)#
+	med<-tapply(sen$log2FC, sen$analysis, function(x) median((x-0)^2))#
+	resultspmedian<-rbind(resultspmedian, med)#
+#
+	sigpro<-sen[sen$adj.pvalue<=0.05,]#
+	sigcount<-tapply(sigpro$adj.pvalue, sigpro$analysis, function(x) length(x))#
+#
+	resultspesig<-rbind(resultspesig,sigcount)#
+#
+}
+xtable(t(resultspmedian), digits=4)
+xtable(t(resultspemse), digits=4)
+xtable(t(resultspesig), digits=0)
+dim(sen)
+head(sen)
+noups<-allresult[-which(allresult$Protein %in% c(mm1,mm2,mm3)),]
+head(noups)
+length(unique(noups$Protein))
+length(unique(allresult$Protein))
+noups<-noups[which(noups$Label %in% c("S8-S1","S8-S2","S8-S3","S8-S4","S8-S5","S8-S6","S8-S7")),]
+noups$Label<-factor(noups$Label)
+noups<-noups[!is.na(noups$log2FC),]
+length(unique(noups$Protein)) ## 2124
+resultspemse<-NULL#
+resultspesig<-NULL#
+resultspmedian<-NULL#
+#
+for(i in 1:length(unique(noups$Label))){#
+	sen<-noups[noups$Label==unique(noups$Label)[i],]#
+#
+	mse<-tapply(sen$log2FC, sen$analysis, function(x) sum((x-0)^2))#
+	count<-tapply(sen$log2FC, sen$analysis, function(x) length(x))#
+#
+	resultspemse<-rbind(resultspemse,mse/count)#
+	med<-tapply(sen$log2FC, sen$analysis, function(x) median((x-0)^2))#
+	resultspmedian<-rbind(resultspmedian, med)#
+#
+	sigpro<-sen[sen$adj.pvalue<=0.05,]#
+	sigcount<-tapply(sigpro$adj.pvalue, sigpro$analysis, function(x) length(x))#
+#
+	resultspesig<-rbind(resultspesig,sigcount)#
+#
+}
+rownames(resultspemse)<-unique(noups$Label)#
+rownames(resultspesig)<-unique(noups$Label)#
+rownames(resultspmedian)<-unique(noups$Label)#
+#
+xtable(t(resultspemse), digits=4)
+xtable(t(resultspmedian), digits=4)
+xtable(t(resultspesig), digits=0)
+rm(list=ls())
+ls()
+load("/Users/Meena/Dropbox/Research/Meena-MSstatsv3-test/spike-data/label_free_MCP/20150519_test/test.linear.RData")
+load("/Users/Meena/Dropbox/Research/Meena-MSstatsv3-test/spike-data/label_free_MCP/20150519_test/test.logofsum.filter.RData")
+load("/Users/Meena/Dropbox/Research/Meena-MSstatsv3-test/spike-data/label_free_MCP/20150519_test/test.logofsum.RData")
+load("/Users/Meena/Dropbox/Research/Meena-MSstatsv3-test/spike-data/label_free_MCP/20150519_test/test.sur.RData")
+load("/Users/Meena/Dropbox/Research/Meena-MSstatsv3-test/spike-data/label_free_MCP/20150519_test/test.sur2.RData")
+load("/Users/Meena/Dropbox/Research/Meena-MSstatsv3-test/spike-data/label_free_MCP/20150519_test/test.tmp.RData")
+load("/Users/Meena/Dropbox/Research/Meena-MSstatsv3-test/spike-data/label_free_MCP/20150519_test/test.top1.RData")
+load("/Users/Meena/Dropbox/Research/Meena-MSstatsv3-test/spike-data/label_free_MCP/20150519_test/test.top3.RData")
+load("/Users/Meena/Dropbox/Research/Meena-MSstatsv3-test/spike-data/label_free_MCP/20150519_test/test.v2.equal.RData")
+load("/Users/Meena/Dropbox/Research/Meena-MSstatsv3-test/spike-data/label_free_MCP/20150519_test/test.v2.equal.rS.RData")
+load("/Users/Meena/Dropbox/Research/Meena-MSstatsv3-test/spike-data/label_free_MCP/20150519_test/test.v2.unequal.RData")
+head(test.v2.equal)#
+test.v2.equal$analysis<-"v2_equal"#
+head(test.v2.equal.rS)#
+test.v2.equal.rS$analysis<-"v2_equal_rS"#
+head(test.v2.unequal)#
+test.v2.unequal$analysis<-"v2_unequal"#
+head(test.top1)#
+test.top1$analysis<-"top1"#
+head(test.top3)#
+test.top3$analysis<-"top3"#
+head(test.linear)#
+test.linear$analysis<-"v3_linear"#
+head(test.tmp)#
+test.tmp$analysis<-"v3_TMP"#
+head(test.logofsum)#
+test.logofsum$analysis<-"v3_logofsum"#
+head(test.logofsum.filter)#
+test.logofsum.filter$analysis<-"v3_logofsum_nofilter"#
+head(test.sur2)#
+test.sur2$analysis<-"v3_censored_feature"#
+head(test.sur)#
+test.sur$analysis<-"v3_censored_run"
+namecol<-colnames(test.sur2)
+namecol
+colnames(test.top1)<-namecol
+colnames(test.top3)<-namecol
+head(test.top1)
+allresult<-rbind(test.v2.equal,test.v2.equal.rS,test.v2.unequal,test.top1,test.top3,test.linear,test.tmp,test.logofsum,test.logofsum.nofilter,test.sur.feature,test.sur.run)
+allresult<-rbind(test.v2.equal,test.v2.equal.rS,test.v2.unequal,test.top1,test.top3,test.linear,test.tmp,test.logofsum,test.logofsum.filter,test.sur.feature,test.sur.run)#
+#
+head(allresult)#
+dim(allresult)
+allresult<-rbind(test.v2.equal,test.v2.equal.rS,test.v2.unequal,test.top1,test.top3,test.linear,test.tmp,test.logofsum,test.logofsum.filter,test.sur2,test.sur)
+head(allresult)
+dim(allresult)
+head(test.logofsum.filter)
+head(test.logofsum)
+ups<-allresult
+ups<-ups[!is.na(ups$log2FC),]
+ups$FCest<-2^(ups$log2FC)
+ups$log10FC<-log10(ups$FCest)
+head(ups)
+unique(ups$Protein) ## 47
+ups$trueFC<-1#
+#
+ups[which(ups$Protein %in% c("P00167ups","P01133ups","P02144ups","P04040ups","P15559ups","P62937ups","P63165ups","Q06830ups")),"trueFC"]<-0#
+#
+ups[which(ups$Protein %in% c("P69905ups","P62988ups","P41159ups","P01031ups","P00918ups","P00915ups","P68871ups;CON__Q3SX09;CON__P02070")),"trueFC"]<-(-1)#
+#
+ups[which(ups$Protein %in% c("P00709ups","P02753ups","P06732ups","P12081ups","P16083ups","P61626ups","P63279ups","Q15843ups")),"trueFC"]<-1#
+#
+ups[which(ups$Protein %in% c("O76070ups","P01127ups","P01344ups","P08263ups","P10599ups","P55957ups","P61769ups","P01008ups;CON__P41361")),"trueFC"]<-2#
+#
+ups[which(ups$Protein %in% c("P06396ups","O00762ups","P01112ups","P01579ups","P09211ups","P51965ups","P99999ups","P02787ups;CON__Q2HJF0")),"trueFC"]<-3#
+#
+ups[which(ups$Protein %in% c("P00441ups","P01375ups","P02741ups","P02788ups","P05413ups","P08758ups","P10145ups","P10636-8ups")),"trueFC"]<-4#
+#
+dim(unique(ups[,c("Protein","trueFC")]))
+unique(ups[,c("Protein","trueFC")])
+head(ups)
+unique(ups$trueFC)
+xtabs(~trueFC, ups)
+xtabs(~trueFC+analysis, ups)
+mse<-tapply(sen$log10FC, sen$analysis, function(x) sum((x-sen$trueFC)^2))
+mse<-tapply(ups$log10FC, ups$analysis, function(x) sum((x-ups$trueFC)^2))
+mse
+length(unique(ups$trueFC))
+i=1
+sen<-ups[ups$trueFC==unique(ups$trueFC)[i],]
+concen<-unique(sen$trueFC)
+concen
+mse<-tapply(sen$log10FC, sen$analysis, function(x) sum((x-concen)^2))
+mse
+count<-tapply(ups$log2FC, sen$analysis, function(x) length(x))
+count<-tapply(sen$log10FC, sen$analysis, function(x) length(x))
+count
+ups<-allresult#
+ups<-ups[!is.na(ups$log2FC),]#
+ups$FCest<-2^(ups$log2FC)#
+#
+ups$log10FC<-log10(ups$FCest)#
+head(ups)#
+#
+unique(ups$Protein) ## 47
+ups$trueFC<-0#
+#
+ups[which(ups$Protein %in% c("P00167ups","P01133ups","P02144ups","P04040ups","P15559ups","P62937ups","P63165ups","Q06830ups")),"trueFC"]<-0#
+#
+ups[which(ups$Protein %in% c("P69905ups","P62988ups","P41159ups","P01031ups","P00918ups","P00915ups","P68871ups;CON__Q3SX09;CON__P02070")),"trueFC"]<-(-1)#
+#
+ups[which(ups$Protein %in% c("P00709ups","P02753ups","P06732ups","P12081ups","P16083ups","P61626ups","P63279ups","Q15843ups")),"trueFC"]<-1#
+#
+ups[which(ups$Protein %in% c("O76070ups","P01127ups","P01344ups","P08263ups","P10599ups","P55957ups","P61769ups","P01008ups;CON__P41361")),"trueFC"]<-2#
+#
+ups[which(ups$Protein %in% c("P06396ups","O00762ups","P01112ups","P01579ups","P09211ups","P51965ups","P99999ups","P02787ups;CON__Q2HJF0")),"trueFC"]<-3#
+#
+ups[which(ups$Protein %in% c("P00441ups","P01375ups","P02741ups","P02788ups","P05413ups","P08758ups","P10145ups","P10636-8ups")),"trueFC"]<-4#
+#
+dim(unique(ups[,c("Protein","trueFC")]))
+unique(ups$trueFC)
+xtabs(~trueFC+analysis, ups)
+sen<-ups[ups$trueFC==unique(ups$trueFC)[i],]
+concen<-unique(sen$trueFC)
+concen
+head(sen)
+resultmse<-NULL#
+resultmedian<-NULL#
+resultsig<-NULL#
+#
+### 10000/1#
+length(unique(sub1$Label))#
+#
+for(i in 1:length(unique(ups$trueFC))){#
+	sen<-ups[ups$trueFC==unique(ups$trueFC)[i],]#
+	concen<-unique(sen$trueFC)#
+#
+	mse<-tapply(sen$log10FC, sen$analysis, function(x) sum((x-concen)^2))#
+	count<-tapply(sen$log10FC, sen$analysis, function(x) length(x))#
+#
+	resultmse<-rbind(resultmse,mse/count)#
+	med<-tapply(sen$log10FC, sen$analysis, function(x) median((x-concen)^2))#
+	resultmedian<-rbind(resultmedian, med)#
+#
+	sigpro<-sen[sen$adj.pvalue<=0.05,]#
+	sigcount<-tapply(sigpro$adj.pvalue, sigpro$analysis, function(x) length(x))#
+#
+	resultsig<-rbind(resultsig,sigcount)#
+}
+resultmse
+resultsig
+resultmedian
+rownames(resultmse)<-unique(sub1$Label)#
+rownames(resultsig)<-unique(sub1$Label)#
+rownames(resultmedian)<-unique(sub1$Label)
+rownames(resultmse)<-unique(ups$trueFC)#
+rownames(resultsig)<-unique(ups$trueFC)#
+rownames(resultmedian)<-unique(ups$trueFC)
+xtable(t(resultmse), digits=4)
+conord<-c(4,3,2,1,-1,0)
+resultmse<-NULL#
+resultmedian<-NULL#
+resultsig<-NULL
+for(i in 1:length(unique(ups$trueFC))){#
+	sen<-ups[ups$trueFC==conord[i],]#
+	concen<-unique(sen$trueFC)#
+#
+	mse<-tapply(sen$log10FC, sen$analysis, function(x) sum((x-concen)^2))#
+	count<-tapply(sen$log10FC, sen$analysis, function(x) length(x))#
+#
+	resultmse<-rbind(resultmse,mse/count)#
+	med<-tapply(sen$log10FC, sen$analysis, function(x) median((x-concen)^2))#
+	resultmedian<-rbind(resultmedian, med)#
+#
+	sigpro<-sen[sen$adj.pvalue<=0.05,]#
+	sigcount<-tapply(sigpro$adj.pvalue, sigpro$analysis, function(x) length(x))#
+#
+	resultsig<-rbind(resultsig,sigcount)#
+}
+rownames(resultmse)<-unique(ups$trueFC)#
+rownames(resultsig)<-unique(ups$trueFC)#
+rownames(resultmedian)<-unique(ups$trueFC)
+xtable(t(resultmse), digits=4)
+i=1
+sen<-ups[ups$trueFC==conord[i],]
+concen<-unique(sen$trueFC)
+concen
+sen4<-ups[ups$trueFC==4,]
+sen4<-sen4[!is.na(sen4$FC),]
+median((sen4$log10FC-4)^2)
+sum((sen4$log10FC-4)^2)/nrow(sen4)
+sen4
+library(MSstats)
+?MSstats
+library(MSstats)
+?dataProcess
+library(MSstats)
+setwd("/Users/Meena/Dropbox/MSstats_GitHub_material/example dataset/DDA_ControlledMixture2009")
+raw<-read.csv("RawData.DDA.csv")
+head(raw)
+quantData<-dataProcess(raw)
+quantData$ProcessedData[1:5,]
+write.csv(quantData$ProcessedData,file="DDA_QuantData.csv")
+dataProcessPlots(data=quantData,type="ProfilePlot",ylimUp=35,address="DDA_")
+dataProcessPlots(data=quantData,type="QCPlot",ylimUp=35,address="DDA_")
+dataProcessPlots(data=quantData,type="ConditionPlot",address="DDA_")
+levels(quantData$ProcessedData$GROUP_ORIGINAL)
+comparison1<-matrix(c(1,-1,0,0,0,0),nrow=1)#
+comparison2<-matrix(c(1,0,-1,0,0,0),nrow=1)#
+comparison3<-matrix(c(1,0,0,-1,0,0),nrow=1)#
+comparison4<-matrix(c(1,0,0,0,-1,0),nrow=1)#
+comparison5<-matrix(c(1,0,0,0,0,-1),nrow=1)#
+#
+comparison<-rbind(comparison1,comparison2,comparison3,comparison4,comparison5)#
+row.names(comparison)<-c("C1-C2","C1-C3","C1-C4","C1-C5","C1-C6")
+resultMultiComparisons<-groupComparison(contrast.matrix=comparison,data=quantData)
+resultMultiComparisons$ComparisonResult
+write.csv(resultMultiComparisons$ComparisonResult, file="DDA_SignificanceTestingResult.csv")
+?modelBasedQCPlots
+modelBasedQCPlots(data=quantData$ModelQC,type="ResidualPlots",featureName=FALSE,address="DDA_")
+modelBasedQCPlots(data=quantData$ModelQC,type="QQPlots",feature.QQPlot="byFeature",address="DDA_")
+groupComparisonPlots(data=resultMultiComparisons$ComparisonResult,type="VolcanoPlot", ylimUp=70, address="DDA_Ex1_")#
+#
+# (2) Both FDR cutoff = 0.05; fold change cutoff = 1.5#
+groupComparisonPlots(data=resultMultiComparisons$ComparisonResult,type="VolcanoPlot", ylimUp=70,FCcutoff=1.5,ProteinName=FALSE, address="DDA_Ex2_")#
+#
+# Visualization 2: Heatmap (required more than one comparisons)#
+# (1) default setup: FDR cutoff = 0.05; fold change cutoff = NA#
+groupComparisonPlots(data=resultMultiComparisons$ComparisonResult,type="Heatmap",address="DDA_Ex1_")#
+#
+# (2) Both FDR cutoff = 0.05; fold change cutoff = 1.5#
+groupComparisonPlots(data=resultMultiComparisons$ComparisonResult,type="Heatmap",FCcutoff=1.5,address="DDA_Ex2_")#
+#
+# Visualization 3: Comparison plot#
+groupComparisonPlots(data=resultMultiComparisons$ComparisonResult,type="ComparisonPlot",address="DDA_")
+result.sample<-designSampleSize(data=resultMultiComparisons$fittedmodel,numSample=TRUE,desiredFC=c(1.5,2),FDR=0.05,power=0.9)
+result.sample
+pdf("DDA_SampleSizePlot.pdf")#
+designSampleSizePlots(data=result.sample)#
+dev.off()
+# (1) group quantification#
+groupQuant<-quantification(data=quantData$ProcessedData,type="Group")#
+write.csv(groupQuant, file="DDA_GroupQuantification.csv")#
+#
+# (2) sample quantification#
+sampleQuant<-quantification(data=quantData$ProcessedData,type="Sample")#
+write.csv(sampleQuant, file="DDA_SampleQuantification.csv")
+rm(list=ls())
+setwd("/Users/Meena/Dropbox/MSstats_GitHub_material/example dataset/DDA_ControlledMixture2014")
+proteinGroups<-read.table("proteinGroups.txt", sep="\t", header=TRUE)
+annot <- read.csv("annotation.csv", header=TRUE)
+infile <- read.table("evidence.txt", sep="\t", header=TRUE)
+reformatinfile<-MaxQtoMSstatsFormat(evidence=infile, annotation=annot, proteinGroups=proteinGroups)
+msstats.raw<-MaxQtoMSstatsFormat(evidence=infile, annotation=annot, proteinGroups=proteinGroups)
+head(msstats.raw)
+evidence<-infile
+save(evidence, file="evidence.RData")
+evidence[1,]
+rm(list=ls())
+setwd("/Users/Meena/Dropbox/MSstats_GitHub_material/example dataset/SRM_ControlledMixture2012")
+raw<-read.csv(file="RawData.SpikeIn.csv")
+head(raw)
+quantData<-dataProcess(raw)
+quantData$ProcessedData[1:5,]
+write.csv(quantData$ProcessedData,file="SpikeIn_QuantData.csv")
+dataProcessPlots(data=quantData,type="ProfilePlot",address="SpikeIn_")#
+dataProcessPlots(data=quantData,type="QCPlot",address="SpikeIn_")#
+dataProcessPlots(data=quantData,type="ConditionPlot",address="SpikeIn_")
+modelBasedQCPlots(data=quantData$ModelQC,type="ResidualPlots",address="SpikeIn_")#
+modelBasedQCPlots(data=quantData$ModelQC,type="QQPlots",feature.QQPlot="byFeature",address="SpikeIn_")
+levels(quantData$ProcessedData$GROUP_ORIGINAL)#
+comparison<-matrix(c(0,0,-1,0,0,1),nrow=1)#
+row.names(comparison)<-"M6-M3"#
+#
+resultOneComparison<-groupComparison(contrast.matrix=comparison,data=quantData)#
+resultOneComparison$ComparisonResult#
+# testing with more than one comparisons#
+comparison1<-matrix(c(0,0,-1,0,0,1),nrow=1)#
+comparison2<-matrix(c(0,0,0,-1,0,1),nrow=1)#
+comparison3<-matrix(c(0,0,0,0,-1,1),nrow=1)#
+comparison<-rbind(comparison1,comparison2,comparison3)#
+row.names(comparison)<-c("M6-M3","M6-M4","M6-M5")#
+resultMultiComparisons<-groupComparison(contrast.matrix=comparison,data=quantData)#
+resultMultiComparisons$ComparisonResult#
+#
+write.csv(resultMultiComparisons$ComparisonResult, file="SpikeIn_SignificanceTestingResult.csv")
+groupComparisonPlots(data=resultMultiComparisons$ComparisonResult,type="VolcanoPlot",ProteinName=FALSE,address="SpikeIn_Ex1_")#
+#
+# (2) Both FDR cutoff = 0.05; fold change cutoff = 2#
+groupComparisonPlots(data=resultMultiComparisons$ComparisonResult,type="VolcanoPlot",FCcutoff=2,ProteinName=FALSE,address="SpikeIn_Ex2_")#
+#
+# Visualization 2: Heatmap (required more than one comparisons)#
+# (1) default setup: FDR cutoff = 0.05; fold change cutoff = NA#
+groupComparisonPlots(data=resultMultiComparisons$ComparisonResult,type="Heatmap", address="SpikeIn_Ex1_")#
+#
+# (2) Both FDR cutoff = 0.05; fold change cutoff = 2#
+groupComparisonPlots(data=resultMultiComparisons$ComparisonResult,type="Heatmap",FCcutoff=2, address="SpikeIn_Ex2_")#
+#
+# Visualization 3: Comparison plot#
+groupComparisonPlots(data=resultMultiComparisons$ComparisonResult,type="ComparisonPlot",address="SpikeIn_")
+result.sample<-designSampleSize(data=resultMultiComparisons$fittedmodel,numSample=TRUE,desiredFC=c(1.2,1.5),FDR=0.05,power=0.8)#
+result.sample
+pdf("SpikeIn_SampleSizePlot.pdf")#
+designSampleSizePlots(data=result.sample)#
+dev.off()
+groupQuant<-quantification(data=quantData$ProcessedData,type="Group")
+write.csv(groupQuant, file="SpikeIn_GroupQuantification.csv")
+sampleQuant<-quantification(data=quantData$ProcessedData,type="Sample")
+write.csv(sampleQuant, file="SpikeIn_SampleQuantification.csv")
+getwd("/Users/Meena/Dropbox/MSstats_GitHub_material/example dataset/SRM_CPTAC")
+setwd("/Users/Meena/Dropbox/MSstats_GitHub_material/example dataset/SRM_CPTAC")
+raw<-read.csv("forMSstats_Study7.csv")
+head(raw)
+quantData<-dataProcess(raw)
+quantData$ProcessedData[1:5,]
+write.csv(quantData$ProcessedData,"Study7_QuantData.csv")
+dataProcessPlots(data=quantData,type="ProfilePlot",address="Study7_")#
+dataProcessPlots(data=quantData,type="QCPlot",address="Study7_")#
+dataProcessPlots(data=quantData,type="ConditionPlot",address="Study7_")
+modelBasedQCPlots(data=quantData$ModelQC,type="ResidualPlots",featureName=FALSE,address="Study7_")#
+modelBasedQCPlots(data=quantData$ModelQC,type="QQPlots",feature.QQPlot="byFeature",address="Study7_")
+levels(quantData$GROUP_ORIGINAL)#
+comparison<-matrix(c(0,0,0,0,0,1,-1),nrow=1)#
+row.names(comparison)<-"I-J"#
+#
+resultOneComparison<-groupComparison(contrast.matrix=comparison,data=quantData)#
+resultOneComparison$ComparisonResult
+comparison1<-matrix(c(0,0,0,0,0,1,-1),nrow=1)#
+comparison2<-matrix(c(0,0,0,0,1,0,-1),nrow=1)#
+comparison3<-matrix(c(0,0,0,1,0,0,-1),nrow=1)#
+comparison<-rbind(comparison1,comparison2,comparison3)#
+row.names(comparison)<-c("I-J","H-J","G-J")#
+#
+resultMultiComparisons<-groupComparison(contrast.matrix=comparison,data=quantData)#
+resultMultiComparisons$ComparisonResult#
+#
+write.csv(resultMultiComparisons$ComparisonResult, file="Study7_SignificanceTestingResult.csv")
+groupComparisonPlots(data=resultMultiComparisons$ComparisonResult,type="VolcanoPlot", ylimUp=70,address="Study7_Ex1_")#
+#
+# (2) Both FDR cutoff = 0.05; fold change cutoff = 2#
+groupComparisonPlots(data=resultMultiComparisons$ComparisonResult,type="VolcanoPlot", ylimUp=70,FCcutoff=2,ProteinName=FALSE,address="Study7_Ex2_")#
+#
+# Visualization 2: Heatmap (required more than one comparisons)#
+# (1) default setup: FDR cutoff = 0.05; fold change cutoff = NA#
+groupComparisonPlots(data=resultMultiComparisons$ComparisonResult,type="Heatmap",address="Study7_Ex1_")#
+#
+# (2) Both FDR cutoff = 0.05; fold change cutoff = 2#
+groupComparisonPlots(data=resultMultiComparisons$ComparisonResult,type="Heatmap",FCcutoff=2,address="Study7_Ex2_")#
+#
+# Visualization 3: Comparison plot#
+groupComparisonPlots(data=resultMultiComparisons$ComparisonResult,type="ComparisonPlot",address="Study7_")
+result.sample<-designSampleSize(data=resultMultiComparisons$fittedmodel,numSample=TRUE,desiredFC=c(1.05,1.25),FDR=0.01,power=0.95)#
+result.sample
+pdf("Study7_SampleSizePlot.pdf")#
+designSampleSizePlots(data=result.sample)#
+dev.off()
+# (1) group quantification#
+groupQuant<-quantification(data=quantData$ProcessedData,type="Group")#
+write.csv(groupQuant, file="Study7_GroupQuantification.csv")#
+#
+# (2) sample quantification#
+sampleQuant<-quantification(data=quantData$ProcessedData,type="Sample")#
+write.csv(sampleQuant, file="Study7_SampleQuantification.csv")
+rm(list=ls())
+getwd("/Users/Meena/Dropbox/MSstats_GitHub_material/example dataset/SRM_OV")
+setwd("/Users/Meena/Dropbox/MSstats_GitHub_material/example dataset/SRM_OV")
+raw<-read.csv("RawData.ovarian.csv")
+head(raw)
+quantData<-dataProcess(raw)
+quantData$ProcessedData[1:5,]
+write.csv(quantData$ProcessedData,file="OvarianCancer_QuantData.csv")
+dataProcessPlots(data=quantData,type="ProfilePlot",address="OvarianCancer_")#
+dataProcessPlots(data=quantData,type="QCPlot",address="OvarianCancer_")#
+dataProcessPlots(data=quantData,type="ConditionPlot",address="OvarianCancer_")
+modelBasedQCPlots(data=quantData$ModelQC,type="ResidualPlots",featureName=FALSE,address="OvarianCancer_")#
+modelBasedQCPlots(data=quantData$ModelQC,type="QQPlots",feature.QQPlot="byFeature",address="OvarianCancer_")
+levels(quantData$GROUP_ORIGINAL)#
+comparison<-matrix(c(-1,1),nrow=1)#
+row.names(comparison)<-"tumor-control"#
+#
+resultOneComparison<-groupComparison(contrast.matrix=comparison,data=quantData)#
+resultOneComparison$ComparisonResult#
+#
+write.csv(resultOneComparison$ComparisonResult, file="OvarianCancer_SignificanceTestingResult.csv")
+groupComparisonPlots(data=resultOneComparison$ComparisonResult,type="VolcanoPlot",address="OvarianCancer_Ex1_")#
+#
+# (2) Both FDR cutoff = 0.05; fold change cutoff = 1.5#
+groupComparisonPlots(data=resultOneComparison$ComparisonResult,type="VolcanoPlot",FCcutoff=1.5,ProteinName=FALSE,address="OvarianCancer_Ex2_")#
+#
+# Visualization 2: Heatmap (required more than one comparisons)#
+# No heatmap is generate in Ovarian cancer study#
+#
+# Visualization 3: Comparison plot#
+groupComparisonPlots(data=resultOneComparison$ComparisonResult,type="ComparisonPlot",address="OvarianCancer_Ex1_")
+result.sample<-designSampleSize(data=resultOneComparison$fittedmodel,numSample=TRUE,desiredFC=c(1.05,1.3),FDR=0.05,power=0.8)#
+#
+result.sample
+pdf("OvarianCancer_SampleSizePlot.pdf")#
+designSampleSizePlots(data=result.sample)#
+dev.off()
+groupQuant<-quantification(data=quantData$ProcessedData,type="Group")#
+write.csv(groupQuant, file="OvarianCancer_GroupQuantification.csv")#
+#
+# (2) sample quantification#
+sampleQuant<-quantification(data=quantData$ProcessedData,type="Sample")#
+write.csv(sampleQuant, file="OvarianCancer_SampleQuantification.csv")
+setwd("/Users/Meena/Dropbox/MSstats_GitHub_material/example dataset/SRM_Yeast")
+raw<-read.csv("RawData.yeast.csv")
+head(raw)
+quantData<-dataProcess(raw)
+quantData$ProcessedData[1:5,]
+write.csv(quantData$ProcessedData,file="Yeast_QuantData.csv")
+dataProcessPlots(data=quantData,type="ProfilePlot",address="Yeast_")#
+dataProcessPlots(data=quantData,type="QCPlot",address="Yeast_")#
+dataProcessPlots(data=quantData,type="ConditionPlot",address="Yeast_")
+modelBasedQCPlots(data=quantData$ModelQC,type="ResidualPlots",address="Yeast_")#
+modelBasedQCPlots(data=quantData$ModelQC,type="QQPlots",feature.QQPlot="byFeature",address="Yeast_")
+levels(quantData$ProcessedData$GROUP_ORIGINAL)
+comparison<-matrix(c(-1,0,0,0,0,0,1,0,0,0),nrow=1)
+row.names(comparison)<-"T7-T1"
+resultOneComparison<-groupComparison(contrast.matrix=comparison,data=quantData)
+resultOneComparison$ComparisonResult
+comparison1<-matrix(c(-1,0,1,0,0,0,0,0,0,0),nrow=1)#
+comparison2<-matrix(c(-1,0,0,0,1,0,0,0,0,0),nrow=1)#
+comparison3<-matrix(c(-1,0,0,0,0,0,1,0,0,0),nrow=1)#
+comparison<-rbind(comparison1,comparison2,comparison3)#
+row.names(comparison)<-c("T3-T1","T5-T1","T7-T1")#
+#
+resultMultiComparisons<-groupComparison(contrast.matrix=comparison,data=quantData)#
+resultMultiComparisons$ComparisonResult#
+#
+write.csv(resultMultiComparisons$ComparisonResult, file="Yeast_SignificanceTestingResult.csv")
+groupComparisonPlots(data=resultMultiComparisons$ComparisonResult,type="VolcanoPlot", ylimUp=70, address="Yeast_Ex1_")#
+#
+# (2) Both FDR cutoff = 0.05; fold change cutoff = 1.5#
+groupComparisonPlots(data=resultMultiComparisons$ComparisonResult,type="VolcanoPlot", ylimUp=70,FCcutoff=1.5,ProteinName=FALSE, address="Yeast_Ex2_")#
+#
+# Visualization 2: Heatmap (required more than one comparisons)#
+# (1) default setup: FDR cutoff = 0.05; fold change cutoff = NA#
+groupComparisonPlots(data=resultMultiComparisons$ComparisonResult,type="Heatmap",address="Yeast_Ex1_")#
+#
+# (2) Both FDR cutoff = 0.05; fold change cutoff = 1.5#
+groupComparisonPlots(data=resultMultiComparisons$ComparisonResult,type="Heatmap",FCcutoff=1.5,address="Yeast_Ex2_")#
+#
+# Visualization 3: Comparison plot#
+groupComparisonPlots(data=resultMultiComparisons$ComparisonResult,type="ComparisonPlot",address="Yeast_Ex1_")
+result.sample<-designSampleSize(data=resultMultiComparisons$fittedmodel,numSample=TRUE,desiredFC=c(1.05,1.3),FDR=0.01,power=0.9)#
+result.sample
+pdf("Yeast_SampleSizePlot.pdf")#
+designSampleSizePlots(data=result.sample)#
+dev.off()
+groupQuant<-quantification(data=quantData$ProcessedData,type="Group")#
+write.csv(groupQuant, file="Yeast_GroupQuantification.csv")#
+#
+# (2) sample quantification#
+sampleQuant<-quantification(data=quantData$ProcessedData,type="Sample")#
+write.csv(sampleQuant, file="Yeast_SampleQuantification.csv")
